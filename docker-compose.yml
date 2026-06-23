@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: carihesap-backend
     ports:
-      - "8001:8000"
+      - "8001:8000"  # Dışarıdan erişim: http://IP:8001
     environment:
       - PYTHONUNBUFFERED=1
     volumes:
@@ -15,7 +15,6 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     networks:
       - carihesap-network
-    # healthcheck kaldırıldı
 
   frontend:
     build:
@@ -23,7 +22,7 @@ services:
       dockerfile: Dockerfile
     container_name: carihesap-frontend
     ports:
-      - "8080:4200"
+      - "4201:4200"  # Dışarıdan erişim: http://IP:4201 (8080 yerine 4201 yaptık)
     environment:
       - NODE_ENV=development
     volumes:
@@ -35,7 +34,6 @@ services:
     depends_on:
       - backend
 
-# ⚠️ NETWORK TANIMI BURADA OLMALI!
 networks:
   carihesap-network:
     driver: bridge
