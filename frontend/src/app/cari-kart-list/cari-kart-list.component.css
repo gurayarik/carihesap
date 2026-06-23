@@ -1,0 +1,41 @@
+.list-card {
+  background: #ffffff;
+  padding: 18px;
+  margin-top: 24px;
+  border-radius: 12px;
+  border: 1px solid #e1e6ee;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px 12px;
+  border: 1px solid #e6ebf2;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+th {
+  background: #f4f7fb;
+  color: #344054;
+}
+
+button.delete {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}

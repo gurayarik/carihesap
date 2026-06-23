@@ -216,3 +216,28 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Angular / frontend
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.angular/
+/frontend/out-tsc/
+/frontend/*.log
+/frontend/.sass-cache/
+/frontend/.vscode/
+/frontend/coverage/
+
+# FastAPI / Python backend
+/backend/.venv/
+/backend/.env
+/backend/*.db
+/backend/*.sqlite
+/backend/__pycache__/
+/backend/*.log
+/backend/.pytest_cache/
+
+# Shared
+node_modules/
+*.log
+.DS_Store
+.env

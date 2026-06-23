@@ -1,0 +1,31 @@
+<section class="list-card">
+  <div class="list-header">
+    <h2>Cari Kartlar</h2>
+    <span>{{ kartlar.length }} kayıt</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Kodu</th>
+        <th>Ünvan</th>
+        <th>Vergi No</th>
+        <th>Telefon</th>
+        <th>Bakiye</th>
+        <th>İşlemler</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let kart of kartlar">
+        <td>{{ kart.cari_kodu }}</td>
+        <td>{{ kart.unvan1 }}</td>
+        <td>{{ kart.tc_no_vergi_no }}</td>
+        <td>{{ kart.cep_telefon }}</td>
+        <td>{{ kart.bakiye | number:'1.2-2' }}</td>
+        <td>
+          <button class="delete" (click)="deleteKart(kart.id)">Sil</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>

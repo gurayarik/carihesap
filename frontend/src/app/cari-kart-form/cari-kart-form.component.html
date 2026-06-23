@@ -1,0 +1,109 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="cari-form">
+  <div class="section">
+    <h2>Temel Bilgiler</h2>
+    <div class="grid-2">
+      <label>
+        Cari Kodu
+        <input formControlName="cari_kodu" placeholder="DW.PP.TT.VVV.XXXX" />
+      </label>
+      <label>
+        Ünvan (Soyadı)
+        <input formControlName="unvan1" placeholder="Şirket / kişi adı" />
+      </label>
+      <label>
+        Ünvan (Adı)
+        <input formControlName="unvan2" placeholder="Opsiyonel" />
+      </label>
+      <label>
+        TC No / Vergi No
+        <input formControlName="tc_no_vergi_no" placeholder="3890805832" />
+      </label>
+      <label>
+        Vergi Dairesi
+        <input formControlName="vergi_dairesi" placeholder="HENDEK" />
+      </label>
+      <label>
+        Web Adresi
+        <input formControlName="web_adresi" placeholder="https://" />
+      </label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Adres Bilgileri</h2>
+    <div class="grid-2">
+      <label>
+        İl
+        <input formControlName="il" />
+      </label>
+      <label>
+        İlçe
+        <input formControlName="ilce" />
+      </label>
+      <label>
+        Mahalle
+        <input formControlName="mahalle" />
+      </label>
+      <label>
+        Cadde
+        <input formControlName="cadde" />
+      </label>
+      <label>
+        Sokak
+        <input formControlName="sokak" />
+      </label>
+      <label>
+        Kapı No
+        <input formControlName="kapino" />
+      </label>
+      <label>
+        Posta Kodu
+        <input formControlName="posta_kodu" />
+      </label>
+      <label>
+        Bölge
+        <input formControlName="bolge" />
+      </label>
+      <label>
+        Ülke
+        <input formControlName="ulke" />
+      </label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>İletişim & Yetkili</h2>
+    <div class="grid-2">
+      <label>
+        Sorumlu Kişi
+        <input formControlName="sorumlu_kisi" />
+      </label>
+      <label>
+        Cep Telefonu
+        <input formControlName="cep_telefon" />
+      </label>
+      <label>
+        E-mail Adresi
+        <input formControlName="email" type="email" />
+      </label>
+      <label>
+        Yetkili Kişi
+        <input formControlName="yetkili_kisi" />
+      </label>
+      <label>
+        Yetkili Cep Telefonu
+        <input formControlName="yetkili_telefon" />
+      </label>
+      <label>
+        Bakiye
+        <input type="number" formControlName="bakiye" />
+      </label>
+      <label class="full-width">
+        Açıklama
+        <textarea formControlName="aciklama" rows="3"></textarea>
+      </label>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="isSubmitting || form.invalid">Cari Kaydet</button>
+</form>

@@ -1,0 +1,97 @@
+pythonimport tkinter as tk
+from tkinter import messagebox
+import pandas as pd
+import os
+
+# Arka plandaki Excel veritabanı dosyamız
+VERITABANI = "cariler_veritabanı.xlsx"
+
+def veritabanini_kontrol_et(basliklar):
+    if not os.path.exists(VERITABANI):
+        df = pd.DataFrame(columns=basliklar)
+        df.to_excel(VERITABANI, index=False)
+
+def kaydet():
+    # Kutulardan verileri çekiyoruz
+    veri = {
+        "Cari Kodu": entry_kod.get(),
+        "Soyadı - Unvan": entry_unvan1.get(),
+        "Adı - Unvan": entry_unvan2.get(),
+        "TC No - Vergi No": entry_vkn.get(),
+        "Vergi Dairesi": entry_vd.get(),
+        "e-mail adresi": entry_email.get()
+    }
+    
+    # Boş alan kontrolü (En azından kod ve unvan zorunlu olsun)
+    if not veri["Cari Kodu"] or not veri["Soyadı - Unvan"]:
+        messagebox.showwarning("Uyarı", "Cari Kodu ve Unvan alanları boş bırakılamaz!")
+        return
+
+    # Excel'e satır olarak ekleme mantığı
+    veritabanini_kontrol_et(list(veri.keys()))
+    mevcut_df = pd.read_excel(VERITABANI)
+    yeni_satir_df = pd.DataFrame([veri])
+    guncel_df = pd.concat([mevcut_df, yeni_satir_df], ignore_index=True)
+    guncel_df.to_excel(VERITABANI, index=False)
+    
+    # Kullanıcıya başarı mesajı gösterme
+    messagebox.showinfo("Başarılı", f"{veri['Cari Kodu']} kodlu cari başarıyla Excel'e satır olarak kaydedildi!")
+    
+    # Kutuları temizleme
+    entry_kod.delete(0, tk.END)
+    entry_unvan1.delete(0, tk.END)
+    entry_unvan2.delete(0, tk.END)
+    entry_vkn.delete(0, tk.END)
+    entry_vd.delete(0, tk.END)
+    entry_email.delete(0, tk.END)
+
+# --- ARAYÜZ PENCERE TASARIMI ---
+pencere = tk.Tk()
+pencere.title("Pirinç 1999 - Cari Hesap Tanıtım Kartı")
+pencere.geometry("500x400")
+pencere.configure(bg="#f0f0f0")
+
+# Başlık Etiketi
+lbl_baslik = tk.Label(pencere, text="CARİ HESAP TANITIM KARTI", font=("Arial", 14, "bold"), bg="#f0f0f0", fg="#2c3e50")
+lbl_baslik.pack(pady=15)
+
+# Form Çerçevesi (Giriş alanlarını düzenli tutmak için)
+cerceve = tk.Frame(pencere, bg="#f0f0f0")
+cerceve.pack(pady=10)
+
+# Form Alanları (Görseldeki mantıkla Etiket ve Giriş Kutusu)
+# 1. Cari Kodu
+tk.Label(cerceve, text="Cari Kodu:", font=("Arial", 10), bg="#f0f0f0").grid(row=0, column=0, sticky="w", pady=5, padx=5)
+entry_kod = tk.Entry(cerceve, font=("Arial", 10), width=30)
+entry_kod.grid(row=0, column=1, pady=5)
+
+# 2. Ünvanı (Soyadı)
+tk.Label(cerceve, text="Ünvanı (Soyadı):", font=("Arial", 10), bg="#f0f0f0").grid(row=1, column=0, sticky="w", pady=5, padx=5)
+entry_unvan1 = tk.Entry(cerceve, font=("Arial", 10), width=30)
+entry_unvan1.grid(row=1, column=1, pady=5)
+
+# 3. Ünvanı (Adı)
+tk.Label(cerceve, text="Ünvanı (Adı):", font=("Arial", 10), bg="#f0f0f0").grid(row=2, column=0, sticky="w", pady=5, padx=5)
+entry_unvan2 = tk.Entry(cerceve, font=("Arial", 10), width=30)
+entry_unvan2.grid(row=2, column=1, pady=5)
+
+# 4. Vergi Dairesi
+tk.Label(cerceve, text="Vergi Dairesi:", font=("Arial", 10), bg="#f0f0f0").grid(row=3, column=0, sticky="w", pady=5, padx=5)
+entry_vd = tk.Entry(cerceve, font=("Arial", 10), width=30)
+entry_vd.grid(row=3, column=1, pady=5)
+
+# 5. Vergi No / TC Kimlik No
+tk.Label(cerceve, text="Vergi No / TC No:", font=("Arial", 10), bg="#f0f0f0").grid(row=4, column=0, sticky="w", pady=5, padx=5)
+entry_vkn = tk.Entry(cerceve, font=("Arial", 10), width=30)
+entry_vkn.grid(row=4, column=1, pady=5)
+
+# 6. E-mail Adresi
+tk.Label(cerceve, text="E-mail Adresi:", font=("Arial", 10), bg="#f0f0f0").grid(row=5, column=0, sticky="w", pady=5, padx=5)
+entry_email = tk.Entry(cerceve, font=("Arial", 10), width=30)
+entry_email.grid(row=5, column=1, pady=5)
+
+# Kaydet Butonu (Görseldeki alt butonlar gibi)
+btn_kaydet = tk.Button(pencere, text="💾 SAKLA (KAYDET)", font=("Arial", 11, "bold"), bg="#27ae60", fg="white", command=kaydet, padx=10, pady=5)
+btn_kaydet.pack(pady=20)
+
+pencere.mainloop()
