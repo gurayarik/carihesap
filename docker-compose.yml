@@ -12,7 +12,7 @@ services:
       - PYTHONUNBUFFERED=1
     volumes:
       - ./backend:/app
-      - ./backend/cari.db:/app/cari.db
+      # - ./backend/cari.db:/app/cari.db  # SİLİNDİ / YORUM SATIRI
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     networks:
       - carihesap-network
@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile
     container_name: carihesap-frontend
     ports:
-      - "4200:4200"
+      - "8080:4200"  # ⚠️ 4200 yerine 8080 kullanıldı (çakışma önlemi)
     environment:
       - NODE_ENV=development
     volumes:
