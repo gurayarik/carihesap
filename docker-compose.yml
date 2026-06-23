@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: carihesap-backend
     ports:
-      - "8001:8000"  # Dışarıdan erişim: http://IP:8001
+      - "5000:8000"   # Dış port 5000 yapıldı (http://IP:5000)
     environment:
       - PYTHONUNBUFFERED=1
     volumes:
@@ -22,13 +22,13 @@ services:
       dockerfile: Dockerfile
     container_name: carihesap-frontend
     ports:
-      - "4201:4200"  # Dışarıdan erişim: http://IP:4201 (8080 yerine 4201 yaptık)
+      - "3000:4200"   # Dış port 3000 yapıldı (http://IP:3000)
     environment:
       - NODE_ENV=development
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: ng serve --host 0.0.0.0 --port 4200 --disable-host-check
+    command: npx ng serve --host 0.0.0.0 --port 4200 --disable-host-check
     networks:
       - carihesap-network
     depends_on:
