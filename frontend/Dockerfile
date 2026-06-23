@@ -4,8 +4,11 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Install system dependencies required for building native modules
-RUN apk add --no-cache python3 make g++
+# Install system dependencies - including bash for better shell compatibility
+RUN apk add --no-cache bash git python3 make g++ curl
+
+# Verify npm is available
+RUN npm --version && npx --version
 
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
