@@ -10,7 +10,7 @@ RUN apk add --no-cache python3 make g++
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
 COPY . .
-RUN npm run build -- --configuration production
+RUN npx ng build --configuration production
 
 # Production image
 FROM nginx:stable-alpine
