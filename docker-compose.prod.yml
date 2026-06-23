@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile
     container_name: carihesap-backend
     ports:
-      - "8000:8000"
+      - "5000:8000"
     environment:
       - PYTHONUNBUFFERED=1
       - PYTHONPATH=/app
@@ -25,11 +25,11 @@ services:
       - db_volume:/app/data
       # Uygulama kodu (isteğe bağlı production'da)
       - ./backend:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    command: uvicorn app.main:app --host 0.0.0.0 --port 5000
     networks:
       - carihesap-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
       interval: 15s
       timeout: 5s
       retries: 3
@@ -52,7 +52,7 @@ services:
       dockerfile: Dockerfile
     container_name: carihesap-frontend
     ports:
-      - "4200:80"
+      - "3000:80"
     networks:
       - carihesap-network
     depends_on:
