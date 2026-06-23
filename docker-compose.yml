@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   backend:
     build:
@@ -13,7 +15,7 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     networks:
       - carihesap-network
-    # healthcheck tamamen kaldırıldı
+    # healthcheck kaldırıldı
 
   frontend:
     build:
@@ -31,4 +33,9 @@ services:
     networks:
       - carihesap-network
     depends_on:
-      - backend  # condition kaldırıldı, sadece bağımlılık var
+      - backend
+
+# ⚠️ NETWORK TANIMI BURADA OLMALI!
+networks:
+  carihesap-network:
+    driver: bridge
