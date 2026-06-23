@@ -48,10 +48,13 @@ docker-compose up -d
 ```
 
 #### Portainer Stack Olarak
-1. Portainer'da "Stacks" bölümüne git
-2. "Add Stack" seç
-3. `docker-compose.yml` dosyasının içeriğini yapıştır
-4. Deploy et
+Detaylı adım adım rehber için bkz: [PORTAINER_DEPLOYMENT.md](PORTAINER_DEPLOYMENT.md)
+
+Özet:
+1. Portainer'da "Stacks" → "Add Stack"
+2. "Web editor" seç
+3. `docker-compose.prod.yml` veya `docker-compose.yml` içeriğini yapıştır
+4. "Deploy the stack" bas
 
 ### 3. Uygulamaya Erişim
 
@@ -64,6 +67,27 @@ docker-compose up -d
 ```bash
 docker-compose down
 ```
+
+## Docker Compose Yapılandırmaları
+
+### Production (`docker-compose.yml`)
+- Nginx ile optimized frontend serving
+- Health checks ile otomatik restart
+- Volume-based database persistence
+- Resource limits
+
+### Development (`docker-compose.dev.yml`)
+- `ng serve` ile hot-reload frontend
+- `uvicorn --reload` ile hot-reload backend
+- Source code mount'ları ile anlık değişiklik izleme
+
+Dev ortamında çalıştırmak için:
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+### Production Optimized (`docker-compose.prod.yml`)
+Portainer veya prod sunucuları için önerilen yapılandırma. Ayrıntılar için: [PORTAINER_DEPLOYMENT.md](PORTAINER_DEPLOYMENT.md)
 
 ## Geliştirme
 

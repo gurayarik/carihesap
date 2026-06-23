@@ -7,17 +7,22 @@ services:
       dockerfile: Dockerfile
     container_name: carihesap-backend
     ports:
-      - "5000:8000"   # Dış port 5000 yapıldı (http://IP:5000)
+      - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
     volumes:
       - ./backend:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-        - ./backend/cari.db:/app/cari.db
-      # Do not use --reload in production containers (reload spawns subprocesses
-      # which can cause import path issues inside containers). Use the simple
-      # uvicorn command for production deployments.
-      command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+      - ./backend/cari.db:/app/cari.db
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    networks:
+      - carihesap-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   frontend:
     build:
@@ -25,15 +30,18 @@ services:
       dockerfile: Dockerfile
     container_name: carihesap-frontend
     ports:
-      build:
-        context: ./frontend
-        dockerfile: Dockerfile
-      container_name: carihesap-frontend
-      # Serve nginx default site on container port 80 mapped to host 4200
-      ports:
-        - "4200:80"
-      networks:
-        - carihesap-network
-      depends_on:
-        backend:
-          condition: service_healthy
+      - "4200:80"
+    networks:
+      - carihesap-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  carihesap-network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local

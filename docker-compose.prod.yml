@@ -1,0 +1,85 @@
+version: '3.8'
+
+# Production-optimized docker-compose configuration for Portainer deployment
+# Features:
+#   - Volume-based database persistence
+#   - Health checks for service availability
+#   - Restart policies for fault tolerance
+#   - Network isolation
+#   - No --reload flag (prevents subprocess import errors)
+
+services:
+  backend:
+    image: carihesap-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: carihesap-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    volumes:
+      # Persisten veritabanı storage
+      - db_volume:/app/data
+      # Uygulama kodu (isteğe bağlı production'da)
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    networks:
+      - carihesap-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    # Resource limits (isteğe bağlı)
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+  frontend:
+    image: carihesap-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: carihesap-frontend
+    ports:
+      - "4200:80"
+    networks:
+      - carihesap-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    # Resource limits (isteğe bağlı)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+networks:
+  carihesap-network:
+    driver: bridge
+    driver_opts:
+      # Networking optimizations
+      com.docker.network.bridge.name: carihesap-br0
+
+volumes:
+  db_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/carihesap/data
